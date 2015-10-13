@@ -13,8 +13,11 @@ wget -q https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.v
 
 wget -q https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/vimrc_Eric.vim -O $HOME/.vimrc
 
-# plugins: colortheme-molokai, rainbow-parentheses, vim-r-plugin, tslime, csv, tabular, NERDTree
+# plugins: latexsuite, rainbow-parentheses, vim-r-plugin, tslime, csv, tabular, NERDTree
 wget -q https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim -O $HOME/.vim/autoload/pathogen.vim
+
+wget -q http://iweb.dl.sourceforge.net/project/vim-latex/snapshots/vim-latex-1.8.23-20141116.812-gitd0f31c9.tar.gz -P $tmp && tar -xf $tmp/vim-latex* -C $tmp && rm -rf $tmp/vim-latex*
+cp -R $tmp/vim-latex*/* $HOME/.vim
 
 mkdir -p $HOME/.vim/bundle
 wget -q https://github.com/godlygeek/tabular/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
