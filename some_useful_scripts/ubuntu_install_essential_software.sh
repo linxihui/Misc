@@ -3,41 +3,6 @@
 tmp=/tmp/ubuntu_install_tmp
 mkdir $tmp
 
-# install vim, and plugins
-# ========================
-
-sudo apt-get -y install vim vim-gnome
-
-mkdir -p $HOME/.vim/colors
-wget -q https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -P $HOME/.vim/colors
-
-wget -q https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/vimrc_Eric.vim -O $HOME/.vimrc
-
-# plugins: latexsuite, rainbow-parentheses, vim-r-plugin, tslime, csv, tabular, NERDTree
-wget -q https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim -O $HOME/.vim/autoload/pathogen.vim
-
-wget -q http://iweb.dl.sourceforge.net/project/vim-latex/snapshots/vim-latex-1.8.23-20141116.812-gitd0f31c9.tar.gz -P $tmp && tar -xf $tmp/vim-latex* -C $tmp && rm -rf $tmp/vim-latex*
-cp -R $tmp/vim-latex*/* $HOME/.vim
-
-mkdir -p $HOME/.vim/bundle
-wget -q https://github.com/godlygeek/tabular/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/tabular/* $HOME/.vim/
-
-wget -q https://github.com/kien/rainbow_parentheses.vim/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/rainbow_parentheses.vim/* $HOME/.vim/
-
-wget -q https://github.com/vim-scripts/Vim-R-plugin/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/Vim-R-plugin/* $HOME/.vim/
-
-
-
-
-# install and configure tmux
-# ==========================
-test `which tmux` && sudo apt-get -y install tmux
-test -d $HOME/.tmux.conf && wget https://github.com/linxihui/Misc/blob/master/some_useful_scripts/tmux.conf -O $HOME/.tmux.conf
-
-
 # install java
 # ============
 
@@ -56,6 +21,45 @@ done
 
 export JAVA_HOME=$(dirname $(dirname $loc))
 echo "JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
+
+
+# install and configure tmux
+# ==========================
+test `which tmux` && sudo apt-get -y install tmux
+test -d $HOME/.tmux.conf && wget https://github.com/linxihui/Misc/blob/master/some_useful_scripts/tmux.conf -O $HOME/.tmux.conf
+
+
+# install vim, and plugins
+# ========================
+
+sudo apt-get -y install vim vim-gnome
+
+mkdir -p $HOME/.vim/colors
+wget -q https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -P $HOME/.vim/colors
+
+wget -q https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/vimrc_Eric.vim -O $HOME/.vimrc
+
+# plugins: latexsuite, rainbow-parentheses, vim-r-plugin, tslime, csv, tabular, NERDTree
+wget -q https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim -O $HOME/.vim/autoload/pathogen.vim
+
+wget -q http://iweb.dl.sourceforge.net/project/vim-latex/snapshots/vim-latex-1.8.23-20141116.812-gitd0f31c9.tar.gz -P $tmp && tar -xf $tmp/vim-latex* -C $tmp 
+rm -rf $tmp/vim-latex*
+cp -R $tmp/vim-latex*/* $HOME/.vim
+
+mkdir -p $HOME/.vim/bundle
+wget -q https://github.com/godlygeek/tabular/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/tabular/* $HOME/.vim/
+
+wget -q https://github.com/kien/rainbow_parentheses.vim/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/rainbow_parentheses.vim/* $HOME/.vim/
+
+wget -q https://github.com/vim-scripts/Vim-R-plugin/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/Vim-R-plugin/* $HOME/.vim/
+
+wget -q https://github.com/scrooloose/nerdtree/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/nerdtree/* $HOME/.vim/
+
+rm -f $HOME/.vim/.gitignore $HOME/.vim/README*
 
 
 # install newest version of R (the version on Ubuntu repository is outdated)
@@ -97,7 +101,7 @@ sudo apt-get -y install ipython ipython-notebook ipython-notebook-common ipython
 
 wget -q https://bootstrap.pypa.io/get-pip.py -P $tmp
 sudo python $tmp/get-pip.py
-sudo pip install numpy scipy pandas pasty Theano
+(sudo pip install numpy scipy pandas pasty Theano ;)
 
 
 # Other program languages and library
@@ -150,6 +154,7 @@ sudo apt-get update && sudo apt-get -y install skype
 wget http://download.teamviewer.com/download/teamviewer_i386.deb -P $tmp
 sudo dpkg -i $tmp/teamviewer_i386.deb
 
+# Others
 sudo apt-get -y install vlc pidgin okular kile
 
 # long time to install texlive-full
