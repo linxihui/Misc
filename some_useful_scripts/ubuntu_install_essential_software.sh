@@ -59,6 +59,14 @@ cp -R $tmp/Vim-R-plugin/* $HOME/.vim/
 wget -q https://github.com/scrooloose/nerdtree/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
 cp -R $tmp/nerdtree/* $HOME/.vim/
 
+wget -q https://github.com/JuliaLang/julia-vim/archive/master.zip -P $tmp && unzip $mp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/julia-vim/* $HOME/.vim/
+
+wget -q https://raw.githubusercontent.com/jimmyharris/tslime.vim/master/plugin/tslime.vim -P $HOME/.vim/plugin
+
+wget -q http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/21798/versions/5/download/zip -O $tmp/vim-matlab.zip
+unzip -q $tmp/vim-matlab.zip -d $HOME/.vim/
+
 rm -f $HOME/.vim/.gitignore $HOME/.vim/README*
 
 
