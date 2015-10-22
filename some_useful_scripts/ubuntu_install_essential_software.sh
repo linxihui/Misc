@@ -26,7 +26,7 @@ echo "JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
 # install and configure tmux
 # ==========================
 test `which tmux` && sudo apt-get -y install tmux
-test -d $HOME/.tmux.conf && wget https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/tmux.conf -O $HOME/.tmux.conf
+test ! -f $HOME/.tmux.conf && wget https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/tmux.conf -O $HOME/.tmux.conf
 
 
 # install vim, and plugins
@@ -74,8 +74,8 @@ rm -f $HOME/.vim/.gitignore $HOME/.vim/README*
 # install newest version of R (the version on Ubuntu repository is outdated)
 # ==========================================================================
 
-ubuntuVersion=`b_release -a | tail -n 1 | cut -f2`
-sudo echo -e "\ndeb http://cran.utstat.utoronto.ca/bin/linux/ubuntu $ubuntuVersion/\n" >> "/etc/apt/sources.list"
+ubuntuVersion=`lsb_release -a | tail -n 1 | cut -f2`
+sudo echo -e "\ndeb http://cran.cnr.berkeley.edu/bin/linux/ubuntu/ $ubuntuVersion/\n" >> "/etc/apt/sources.list"
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 sudo apt-get -y update
 sudo apt-get -y upgrade
@@ -86,7 +86,7 @@ sudo apt-get -y install r-base r-base-dev
 sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev
 sudo R CMD javareconf
 
-Rscript -e " install.packages( c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk'))"
+Rscript -e "install.packages( c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk'), lib = Sys.getenv('R_LIBS_USER'))"
 
 )
 
@@ -98,7 +98,7 @@ sudo apt-get -y install ipython ipython-notebook ipython-notebook-common ipython
 
 wget -q https://bootstrap.pypa.io/get-pip.py -P $tmp
 sudo python $tmp/get-pip.py
-(sudo pip install numpy scipy pandas pasty Theano ;)
+(sudo pip install numpy scipy pandas patsy Theano ;)
 
 
 # Other program languages and library
