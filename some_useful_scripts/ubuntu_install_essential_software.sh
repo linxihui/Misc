@@ -40,11 +40,12 @@ wget -q https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.v
 wget -q https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/vimrc_Eric.vim -O $HOME/.vimrc
 
 # plugins: latexsuite, rainbow-parentheses, vim-r-plugin, tslime, csv, tabular, NERDTree
+mkdir -p $HOME/.vim/autoload
 wget -q https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim -O $HOME/.vim/autoload/pathogen.vim
 
 wget -q http://iweb.dl.sourceforge.net/project/vim-latex/snapshots/vim-latex-1.8.23-20141116.812-gitd0f31c9.tar.gz -P $tmp && tar -xf $tmp/vim-latex* -C $tmp 
-rm -rf $tmp/vim-latex*
 cp -R $tmp/vim-latex*/* $HOME/.vim
+rm -rf $tmp/vim-latex*
 
 mkdir -p $HOME/.vim/bundle
 wget -q https://github.com/godlygeek/tabular/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
@@ -59,7 +60,7 @@ cp -R $tmp/Vim-R-plugin*/* $HOME/.vim/
 wget -q https://github.com/scrooloose/nerdtree/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
 cp -R $tmp/nerdtree*/* $HOME/.vim/
 
-wget -q https://github.com/JuliaLang/julia-vim/archive/master.zip -P $tmp && unzip -q $mp/master.zip -d $tmp && rm -rf $tmp/master.zip
+wget -q https://github.com/JuliaLang/julia-vim/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
 cp -R $tmp/julia-vim*/* $HOME/.vim/
 
 wget -q https://raw.githubusercontent.com/jimmyharris/tslime.vim/master/plugin/tslime.vim -P $HOME/.vim/plugin
@@ -85,18 +86,7 @@ sudo apt-get -y install r-base r-base-dev
 sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev
 sudo R CMD javareconf
 
-Rscript -e "
-    install.packages(
-        c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 
-            'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 
-            'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 
-            'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 
-            'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 
-            'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 
-            'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 
-            'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 
-            'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk')
-        )"
+Rscript -e " install.packages( c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk'))"
 
 )
 
@@ -167,3 +157,5 @@ sudo apt-get -y install vlc pidgin okular kile
 
 # long time to install texlive-full
 # sudo apt-get -y install texlive-full
+
+rm -rf $tmp
