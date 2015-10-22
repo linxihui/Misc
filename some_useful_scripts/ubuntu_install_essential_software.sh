@@ -88,7 +88,7 @@ sudo R CMD javareconf
 rlib=`Rscript -e "cat(Sys.getenv('R_LIBS_USER'))"`
 mkdir -p `echo $rlib | seed "s#^~#$HOME#"`
 
-cat 'local({
+echo 'local({
   r <- getOption("repos")
   r["CRAN"] <- "http://cran.stat.sfu.ca/"
   options(repos = r)
