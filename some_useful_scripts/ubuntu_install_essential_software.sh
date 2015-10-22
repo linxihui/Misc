@@ -85,9 +85,16 @@ sudo apt-get -y install r-base r-base-dev
 (
 sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev
 sudo R CMD javareconf
-mkdir -p `Rscript -e "cat(Sys.getenv('R_LIBS_USER'))"`
+rlib=`Rscript -e "cat(Sys.getenv('R_LIBS_USER'))"`
+mkdir -p `echo $rlib | seed "s#^~#$HOME#"`
 
-Rscript -e "install.packages( c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk'), lib = Sys.getenv('R_LIBS_USER'))"
+cat 'local({
+  r <- getOption("repos")
+  r["CRAN"] <- "http://cran.stat.sfu.ca/"
+  options(repos = r)
+})' >> $HOME/.Rprofile
+
+Rscript -e "install.packages( c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk'), lib = Sys.getenv('R_LIBS_USER'), repos = 'http://cran.stat.sfu.ca')"
 
 )
 
