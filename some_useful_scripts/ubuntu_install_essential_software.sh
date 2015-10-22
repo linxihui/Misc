@@ -26,7 +26,7 @@ echo "JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
 # install and configure tmux
 # ==========================
 test `which tmux` && sudo apt-get -y install tmux
-test -d $HOME/.tmux.conf && wget https://github.com/linxihui/Misc/blob/master/some_useful_scripts/tmux.conf -O $HOME/.tmux.conf
+test -d $HOME/.tmux.conf && wget https://raw.githubusercontent.com/linxihui/Misc/master/some_useful_scripts/tmux.conf -O $HOME/.tmux.conf
 
 
 # install vim, and plugins
@@ -47,20 +47,20 @@ rm -rf $tmp/vim-latex*
 cp -R $tmp/vim-latex*/* $HOME/.vim
 
 mkdir -p $HOME/.vim/bundle
-wget -q https://github.com/godlygeek/tabular/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/tabular/* $HOME/.vim/
+wget -q https://github.com/godlygeek/tabular/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/tabular*/* $HOME/.vim/
 
-wget -q https://github.com/kien/rainbow_parentheses.vim/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/rainbow_parentheses.vim/* $HOME/.vim/
+wget -q https://github.com/kien/rainbow_parentheses.vim/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/rainbow_parentheses.vim*/* $HOME/.vim/
 
-wget -q https://github.com/vim-scripts/Vim-R-plugin/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/Vim-R-plugin/* $HOME/.vim/
+wget -q https://github.com/vim-scripts/Vim-R-plugin/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/Vim-R-plugin*/* $HOME/.vim/
 
-wget -q https://github.com/scrooloose/nerdtree/archive/master.zip -P $tmp && unzip $tmp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/nerdtree/* $HOME/.vim/
+wget -q https://github.com/scrooloose/nerdtree/archive/master.zip -P $tmp && unzip -q $tmp/master.zip -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/nerdtree*/* $HOME/.vim/
 
-wget -q https://github.com/JuliaLang/julia-vim/archive/master.zip -P $tmp && unzip $mp/master.zip -q -d $tmp && rm -rf $tmp/master.zip
-cp -R $tmp/julia-vim/* $HOME/.vim/
+wget -q https://github.com/JuliaLang/julia-vim/archive/master.zip -P $tmp && unzip -q $mp/master.zip -d $tmp && rm -rf $tmp/master.zip
+cp -R $tmp/julia-vim*/* $HOME/.vim/
 
 wget -q https://raw.githubusercontent.com/jimmyharris/tslime.vim/master/plugin/tslime.vim -P $HOME/.vim/plugin
 
@@ -86,18 +86,17 @@ sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev
 sudo R CMD javareconf
 
 Rscript -e "
-	install.packages(
-		c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 
-			'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 
-			'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 
-			'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 
-			'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 
-			'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 
-			'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 
-			'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 
-			'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk'),
-		lib = Sys.getenv('R_LIBS_USER')
-		)"
+    install.packages(
+        c('readr', 'openxlsx', 'data.table', 'plyr', 'dplyr', 'reshape2', 'ff', 
+            'ffbase', 'tables', 'sqldf', 'jsonlite', 'stringr', 'ggplot2', 'lattice', 
+            'latticeExtra', 'maps', 'ggvis', 'leaflet', 'devtools', 'futile.logger', 
+            'testthat', 'getopt', 'pryr', 'inline', 'Rcpp', 'RcppArmadillo', 'RcppEigen', 
+            'foreach', 'doMC', 'doMPI', 'xtable', 'rmarkdown', 'slidfy', 'XML', 'httr', 
+            'shiny', 'pROC', 'glmnet', 'mboost', 'gbm', 'ada', 'randomForest', 'randomForestSRC', 
+            'party', 'kernlab', 'kknn', 'neuralnet', 'deepnet', 'e1071', 'NMF', 'lle', 
+            'autoencoder', 'irace', 'mlr', 'Hmisc', 'mice', 'mlbench', 'matrixStats', 'sp', 
+            'gdata', 'xlsx', 'multcomp', 'coda', 'rjags', 'quantreg', 'gee', 'lme4', 'cmprsk')
+        )"
 
 )
 
@@ -156,11 +155,12 @@ sudo dpkg -i $tmp/rstudio*
 # skype
 sudo dpkg --add-architecture i386
 sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
-sudo apt-get update && sudo apt-get -y install skype
+sudo apt-get -y update && sudo apt-get -y install skype
 
 # teamviewer
 wget http://download.teamviewer.com/download/teamviewer_i386.deb -P $tmp
-sudo dpkg -i $tmp/teamviewer_i386.deb
+yes | sudo dpkg -i $tmp/teamviewer_i386.deb
+sudo apt-get -f install
 
 # Others
 sudo apt-get -y install vlc pidgin okular kile
