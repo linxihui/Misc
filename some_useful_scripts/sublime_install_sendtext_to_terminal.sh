@@ -8,11 +8,25 @@ sub=`ls $HOME/.config/ | grep sublime`
 tmuxloc=`which tmux`
 
 # check if sublime installed
-if [ ! -d $sub ]
+if [ ! $sub ]
 then
-	echo "Sublime Text not installed."
-	exit 1
+	sub_opt=`ls /opt/ | grep -i sublime`
+	if [ $sub_opt ]
+	then 
+		if [ $sub_opt =~ "2$"] 
+		then
+			mkdir -p "$HOME/.config/sublime-text-2"
+		else
+			mkdir -p "$HOME/.config/sublime-text-3"
+		fi
+	else
+		echo "Sublime not found."
+	fi
 fi
+
+sub=`ls $HOME/.config/ | grep sublime`
+
+mkdir -p $HOME/.config/$sub/Packages
 
 # install tmux if not exists
 if [ ! $tmuxloc ]
@@ -30,6 +44,7 @@ fi
 # check if plugin 'SendText' has been installed
 if [ -d $HOME/.config/$sub/Packages/SendText ]
 then
+	echo "SendText plugin has been installed already. Exit."
 	exit 0
 fi
 
