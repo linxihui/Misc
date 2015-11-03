@@ -24,6 +24,11 @@ echo "JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
 
 sudo apt-get -y install liblzma-dev
 
+
+# install pandoc
+sudo apt-get -y install pandoc
+
+
 # install and configure tmux
 # ==========================
 test `which tmux` && sudo apt-get -y install tmux
