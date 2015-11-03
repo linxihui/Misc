@@ -25,8 +25,9 @@ echo "JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
 sudo apt-get -y install liblzma-dev
 
 
-# install pandoc
-sudo apt-get -y install pandoc
+# install pandoc, the one on ubuntu repositery is very old
+wget https://github.com/jgm/pandoc/releases/download/1.15.1/pandoc-1.15.1-1-amd64.deb -P $tmp
+yes | sudo dpkg -i $tmp/pandoc*
 
 
 # install and configure tmux
