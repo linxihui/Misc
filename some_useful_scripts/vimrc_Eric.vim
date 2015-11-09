@@ -57,6 +57,8 @@ set mousemodel=popup
 "set clipboard=unnamedplus
 "set t_Co=256
 "set spell
+set listchars=tab:\|\ 
+set list
 
 
 let maplocalleader = ","
