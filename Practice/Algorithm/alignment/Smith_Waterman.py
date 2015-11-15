@@ -1,48 +1,83 @@
-import numpy as np
-
-## Smith–Waterman algorithm
+## Smith-Waterman algorithm
+from numpy import zeros, argmax
 
 class Smith_Waterman:
-    """Smith Waterman for string alignment
-    Attributes:
-        a: sequence to be aligned
-        b: reference sequence
-        m, ms: match score, mis-match penalty
-        Wi, Wd: penalty for insertion, deletion
-        Go: penalty to open a gap
-        H: alignment score, row = a, column = b
-        T: alignment direction
-        start: start position of first pair
-        path: forward alignment path. 1 = match/mis-match, 2 = deletion, 3 = insertion
-        aligned_string: a tuple of 2, aligned a and b
+    """
+
+    Smith Waterman for string alignment
+
+    Attributes
+    ----------
+    a : string
+         sequence to be aligned
+    b : string
+         reference sequence
+    m : double
+         match score
+    ms : double
+         mis-match penalty
+    Wi : double
+         penalty for extending an insertion
+    Wd : double
+         penalty for extending a deletion
+    Go : double
+         penalty to open a gap, insertion/deletion
+    H : 2D numpy array
+         alignment score, row = a, column = b
+    T : 2D numpy array
+         alignment direction
+    start : tuple of 2 integers
+         start position of first pair
+    path : list
+         forward alignment path. 1 = match/mis-match, 2 = deletion, 3 = insertion
+    aligned_string : tuple of 2 strings
+         a tuple of 2, aligned a and b
+
     """
     start = (0, 0)
     path = []
     aligned_string = ("", "")
+
     def __init__(self, a, b, m = 2, ms = -1, Wi = -1, Wd = -1, Go = -3):
-        """ Initialization:
-        Args:
-            a: sequence to be aligned
-            b: reference sequence
-            m, ms: match score, mis-match penalty
-            Wi, Wd: penalty for insertion, deletion
-            Go: penalty to open a gap
+        """
+        Initialization
+
+        Parameters
+        ----------
+        a : string
+            sequence to be aligned
+        b : string
+            reference sequence
+        m, ms : double
+            match score, mis-match penalty
+        Wi, Wd : double
+            penalty for insertion, deletion
+        Go : double
+            penalty to open a gap
+
         """
         self.a = a
         self.b = b
-        self.H = np.zeros((len(a)+1, len(b)+1))
-        self.T = np.zeros(self.H.shape, dtype='int8')
+        self.H = zeros((len(a)+1, len(b)+1))
+        self.T = zeros(self.H.shape, dtype='int8')
         self.m = m
         self.ms = ms
         self.Wi = Wi
         self.Wd = Wd
         self.Go = Go
+
     def _align_next(self, i, j):
         """Align the next pair
-            compute the (i, j) cell of the score matrix H and direction matrix T
-        Args:
-            i: i-th character of a (sequence to be aligned)
-            j: j-th character of b (reference sequence)
+
+        Compute the (i, j) cell of the score matrix H and direction matrix T
+
+        Parameters
+        ----------
+        i : double
+            i-th character of a (sequence to be aligned)
+        j : double
+            j-th character of b (reference sequence)
+
         """
         if i == 0 or j == 0:
             self.H[i,j] = 0
@@ -77,17 +112,22 @@ class Smith_Waterman:
         self.H[i,j] = tmp
         self.T[i,j] = itmp
         return None
+
     def align(self, indel_str = "-"):
         """ Align using Smith-Waterman algorithm
-        Args:
-            indel_str: string to visualize a gap (indel)
+
+        Parameters
+        ----------
+        indel_str : double
+            string to visualize a gap (indel)
+
         """
         r, c = self.H.shape
         for i in xrange(r):
             for j in xrange(c):
                 self._align_next(i, j)
-        im = np.argmax(self.H[-1, :])
-        jm = np.argmax(self.H[:, -1])
+        im = argmax(self.H[-1, :])
+        jm = argmax(self.H[:, -1])
         if self.H[-1, im] > self.H[jm, -1]:
             i = r-1
             j = im
@@ -128,12 +168,19 @@ class Smith_Waterman:
         self.aligned_string = (a, b)
         self.path = path
         return None
+
     def show(self, by = 100, show_match = True, match_char = "|"):
         """Print Alignment result
-        Args:
-             by: Number of character per line
-             show_match: if to connected matched pairs
-             match_char: character to show matched pairs
+        
+        Parameters
+        ----------
+         by : int
+            number of character per line
+         show_match : bool
+            if to connected matched pairs
+         match_char : string
+            character to show matched pairs
+
         """
         if by <= 0:
             by = len(self.aligned_string[0])
@@ -152,3 +199,11 @@ class Smith_Waterman:
             j += by
             if (j > l): j = l
         return None
+
+
+if __name__ == "__main__":
+    a = "GGAAGTACAGTGCATCGCTATAATTCATTAATACATCATAAATCGTGAAGCACAGGGTTATAACGACCACGATCCACAAATCAAGCCCTCCAAAATCACCCAAATGAGCTCGTACTTTGTAAACTCCTTCTCGGGGCGTTATCCAAA"
+    b = "GGAAGTACAGTGCATCGCTATAATTCATTAAAGTACATCATAAATCGTGAAACACAGGGTTATAACGACCGATCCACAAATCAAGCCCTCCGGGATCACCCAAATATTGAGCTCGTACTTTGTAAACTCCTTCTGGGGCGTTATCCAAA"
+    a2b = Smith_Waterman(a, b)
+    a2b.align()
+    a2b.show()
