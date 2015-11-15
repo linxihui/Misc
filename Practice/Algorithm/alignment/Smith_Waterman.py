@@ -29,7 +29,10 @@ class Smith_Waterman:
     start : tuple of 2 integers
          start position of first pair
     path : list
-         forward alignment path. 1 = match/mis-match, 2 = deletion, 3 = insertion
+         forward alignment path, encoded as
+         1 = match or miss-match
+         2 = deletion / move right
+         3 = insertion / move down
     aligned_string : tuple of 2 strings
          a tuple of 2, aligned a and b
 
@@ -56,15 +59,10 @@ class Smith_Waterman:
             penalty to open a gap
 
         """
-        self.a = a
-        self.b = b
+        self.a, self.b = a, b
         self.H = zeros((len(a)+1, len(b)+1))
         self.T = zeros(self.H.shape, dtype='int8')
-        self.m = m
-        self.ms = ms
-        self.Wi = Wi
-        self.Wd = Wd
-        self.Go = Go
+        self.m, self.ms, self.Wi, self.Wd, self.Go = m, ms, Wi, Wd, Go
 
     def _align_next(self, i, j):
         """Align the next pair
@@ -84,22 +82,25 @@ class Smith_Waterman:
             self.T[i,j] = 0
             return None
         score = [0, 0, 0] # diag, left, up
-        # miss match, (i-1, j-1)
+
+        # match and miss match, (i-1, j-1)
         if self.a[i-1] == self.b[j-1]:
             score[0] = self.H[i-1,j-1] + self.m
         else:
             score[0] = self.H[i-1,j-1] + self.ms
-        # open gap has penalty > continue a gap
-        # if self.T[i-1, j]
-        score[2] = self.Wi + self.H[i, j-1] # np.max(self.H[i, :j]), insertion
+
+        # deletion (a gap on a)
         if self.T[i-1, j] == 2: # Gap continue
-            score[1] = self.Wd + self.H[i-1, j] # deletion
+            score[1] = self.Wd + self.H[i-1, j]
         else: # Gap open
-            score[1] = self.Go + self.H[i-1, j] # deletion
+            score[1] = self.Go + self.H[i-1, j]
+
+        # insertion (a gap on b)
         if self.T[i, j-1] == 3: # Gap continue
-            score[2] = self.Wi + self.H[i, j-1] # insertion
+            score[2] = self.Wi + self.H[i, j-1]
         else: # Gap open
-            score[2] = self.Go + self.H[i, j-1] # insertion
+            score[2] = self.Go + self.H[i, j-1]
+
         # find max
         tmp = score[0]
         itmp = 1
