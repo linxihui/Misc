@@ -41,9 +41,12 @@ int merge_sort(vector<T> & x, int start, int end)
 }
 
 
-int main() 
+int main(int argc, char* argv[]) 
 {
-	int n = 10000000;
+	int n = 10;
+	if (argc >= 2) 
+		n = atoi(argv[1]);
+	cout << "n = " << n << endl;
 	arma::vec x0 = arma::randu<arma::vec>(n);
 	vector<double> x(x0.begin(), x0.end());
 
