@@ -1,47 +1,47 @@
-#include <cmath>
 #include <bits/stdc++.h>
 #include <armadillo>
 
 using namespace std;
 
 template <typename T>
-void quicksort(vector<T> & A, int lo, int hi)
+void quicksort(vector<T> & x, int lo, int hi)
 {
-	if(lo < hi)
+	if (lo < hi)
 	{
-		T cur = A[hi];
+		// T pivot = x[hi]; // fixed pivot
+		// random pivot
+		T pivot = x[rand() % (hi - lo) + lo];
 		// i: cell to be compared
 		// j: empty cell
 		int i = lo, j = hi, tmp;
 		while (i != j)
 		{
-			if ((i < j) == (A[i] > cur))
+			if ((i < j) == (x[i] > pivot))
 			{
-				A[j] = A[i];
+				x[j] = x[i];
 				tmp = j;
 				j = i;
 				i = tmp;
 			}
 			(i < j)? i++ : i--;
 		}
-		A[j] = cur;
-		quicksort(A, lo, j-1);
-		quicksort(A, j+1, hi);
+		x[j] = pivot;
+		quicksort(x, lo, j-1);
+		quicksort(x, j+1, hi);
 	}
 }
 
 template <typename T>
-void quicksort(vector<T> & A)
+void quicksort(vector<T> & x)
 {
-	quicksort(A, 0, A.size()-1);
+	quicksort(x, 0, x.size()-1);
 }
 
 
 int main(int argc, char* argv[]) 
 {
 	int n = 10;
-	if (argc >= 2) 
-		n = atoi(argv[1]);
+	if (argc >= 2) n = atoi(argv[1]);
 	cout << "n = " << n << endl;
 	arma::vec x0 = arma::randn<arma::vec>(n);
 	vector<double> x(x0.begin(), x0.end());
