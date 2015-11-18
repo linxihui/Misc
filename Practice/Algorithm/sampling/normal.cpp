@@ -3,18 +3,20 @@
 
 using namespace std;
 
+//[[Rcpp::export]]
 vector<double> rand_std_norm(int n)
 {
 	// generate standard normal distribution using Box-Muller transform
 	// if u1, u2 ~ unif(0,1) independently, then 
-	// r1 = sqrt(-2*log(u1)) * cos(2*M_PI*u2)
+	// r1 = sqrt(-2*log(u1))*cos(2*M_PI*u2)
 	// r2 = sqrt(-2*log(u1))*sin(2*M_PI*u2)
 	// are independent standardard normal sample
-	double u1, u2;
 	vector<double> out(n);
-	double a, b;
+	register double u1, u2, a, b;
 	vector<double>::iterator p = out.begin();
-	//pragma omp parallel for
+
+	// seeding problem?
+	#pragma omp parallel for
 	for (int j = 0; j < n/2; j++)
 	{
 		u1 = double(rand()) / RAND_MAX;
@@ -34,7 +36,7 @@ vector<double> rand_std_norm(int n)
 
 	return out;
 }
-
+/*
 int main() {
 
 	int n = 20;
@@ -48,3 +50,4 @@ int main() {
 	}
 	return 0;
 }
+*/
