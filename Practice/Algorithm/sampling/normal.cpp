@@ -16,7 +16,8 @@ vector<double> rand_std_norm(int n)
 	vector<double>::iterator p = out.begin();
 
 	// seeding problem?
-	#pragma omp parallel for
+	// cannot use OMP when using iterator p. Switch to index access if parallel required
+	//#pragma omp parallel for private(u1, u2, a, b)
 	for (int j = 0; j < n/2; j++)
 	{
 		u1 = double(rand()) / RAND_MAX;
