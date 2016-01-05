@@ -5,85 +5,118 @@
 using namespace std;
 using namespace arma;
 
+Rcpp::List nmf_brunet(mat, int, int, double);
+mat get_nmf_coef_brunet(mat, mat, int, double);
+
 //[[Rcpp::export]]
-Rcpp::List nmfcpp(mat V, int k, int max_iter = 100, double tol = 1e-4)
+Rcpp::List nmf_brunet(mat V, int k = 1, int max_iter = 500, double tol = 1e-5)
 {
+	/* 
+	 * Description: 
+	 * 	An implment of Brunet's multiplicative updates based on KL divergence for non-negative matrix factorization.
+	 * 	This is more stable than the following one as it alternatingly updates each rank of W and H
+	 * Arguments:
+	 * 	V: a matrix to be decomposed, such that V ~ W*H
+	 * 	k: rank
+	 * Return:
+	 * 	A list of W, H, error, steps (= iteration until convergent or max_iter reached)
+	 * Complexity:
+	 * 	O(max_iter x k x V.n_row x V.n_col)
+	 * Author:
+	 * 	Eric Xihui Lin <xihuil.silence@gmail.com>
+	 * Version:
+	 * 	2015-10-28
+	 */
 	mat W = randu(V.n_rows, k), H = randu(k, V.n_cols);
-	mat wtemp(W), htemp(H);
-	mat Vbar = W*H;
+	mat Vbar = W*H; // current W*H
+	rowvec w, ha; // W/h  = col/row sum of W/H
+	colvec h, wa; // ha/wa = previous H.row/W.col for fast update of Vbar
 	vec err(max_iter);
 	err.fill(-1);
 
 	int i = 0;
-	for(; i < max_iter; i++)
-	{
-		wtemp.each_row() /= sum(wtemp, 0);
-		htemp.each_col() /= sum(htemp, 1);
-		H = wtemp.t() * (V / (Vbar)) % H;
-		W = (V / Vbar) * htemp.t() % W;
-		Vbar = W*H;
-		wtemp = W;
-		htemp = H;
-		err.at(i) =  sqrt(mean(mean(square(V - Vbar), 1)));
-		if (i > 0 && abs(err.at(i) - err.at(i-1)) < tol)
-		{
-			cout << "Algorithm converges after " << ++i << " steps" << endl;
-			err.resize(i);
-			break;
-		}
-	}
-
-	if (i == max_iter)
-		cout << "Algorithm not convergenet." << endl;
-
-	return Rcpp::List::create(
-		Rcpp::Named("W") = W,
-		Rcpp::Named("H") = H,
-		Rcpp::Named("error") = err,
-		Rcpp::Named("iteration") = i
-		);
-}
-
-
-
-
-//[[Rcpp::export]]
-Rcpp::List nmf2(mat V, int k, int max_iter = 100, double tol = 1e-4)
-{
-	mat W = randu(V.n_rows, k), H = randu(k, V.n_cols);
-	mat Vbar;
-	rowvec w;
-	colvec h;
-	vec err(max_iter);
-	err.fill(-1);
-
-	int i = 0;
-	for(; i < max_iter; i++)
+	for(; i < max_iter; i++) 
 	{
 		w = sum(W);
 		h = sum(H, 1);
 		for (int a = 0; a < k; a++)
 		{
-			H.row(a) %= W.col(a).t() * (V / (W*H)) / w.at(a);
-			W.col(a) %= (V / (W*H)) * H.row(a).t() / h.at(a);
+			ha = H.row(a);
+			H.row(a) %= W.col(a).t() * (V / Vbar) / w.at(a);
+			Vbar += W.col(a) * (H.row(a) - ha);
+			wa = W.col(a);
+			W.col(a) %= (V / Vbar) * H.row(a).t() / h.at(a);
+			Vbar += (W.col(a) - wa) * H.row(a);
 		}
-		Vbar = W*H;
 		err.at(i) =  sqrt(mean(mean(square(V - Vbar), 1)));
 		if (i > 0 && abs(err.at(i) - err.at(i-1)) < tol)
 		{
-			cout << "Algorithm converges after " << ++i << " steps" << endl;
 			err.resize(i);
 			break;
 		}
 	}
 
-	if (i == max_iter)
-		cout << "Algorithm does not converge." << endl;
+	if (max_iter <= i)
+	{
+		Rcpp::Function warning("warning");
+		warning("Algorithm does not converge.");
+	}
 
 	return Rcpp::List::create(
 		Rcpp::Named("W") = W,
 		Rcpp::Named("H") = H,
-		Rcpp::Named("error") = err,
-		Rcpp::Named("iteration") = i
+		Rcpp::Named("error") = err
 		);
+}
+
+
+//[[Rcpp::export]]
+mat get_nmf_coef_brunet(mat V, mat W, int max_iter = 500, double tol = 1e-5)
+{
+	/*
+	 * Description:
+	 * 	Get coefficient matrix H given V and W, where V ~ W*H
+	 * Arguments:
+	 * 	V, W:
+	 * 	max_iter: maximum number of iterations
+	 * 	tol: root mean square error of  V-W*H between two successive iteration
+	 * Author:
+	 * 	Eric Xihui Lin <xihuil.silence@gmail.com>
+	 * Version:
+	 * 	2015-10-28
+	 */
+
+	int k = W.n_cols;
+	mat H = randu(k, V.n_cols);
+	mat Vbar = W*H;
+	rowvec w = sum(W);
+	colvec h, ha;
+	vec err(max_iter);
+	err.fill(-1);
+
+	int i = 0;
+	for(; i < max_iter; i++)
+	{
+		h = sum(H, 1);
+		for (int a = 0; a < k; a++)
+		{
+			ha = H.row(a);
+			H.row(a) %= W.col(a).t() * (V / Vbar) / w.at(a);
+			Vbar += W.col(a) * (H.row(a) - ha);
+		}
+		err.at(i) =  sqrt(mean(mean(square(V - Vbar), 1)));
+		if (i > 0 && abs(err.at(i) - err.at(i-1)) < tol)
+		{
+			err.resize(i);
+			break;
+		}
+	}
+
+	if (max_iter <= i)
+	{
+		Rcpp::Function warning("warning");
+		warning("Algorithm does not converge.");
+	}
+
+	return H;
 }

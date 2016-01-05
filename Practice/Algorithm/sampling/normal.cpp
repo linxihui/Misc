@@ -4,6 +4,8 @@
 using namespace std;
 
 //[[Rcpp::export]]
+
+extern "C" {
 vector<double> rand_std_norm(int n)
 {
 	// generate standard normal distribution using Box-Muller transform
@@ -37,6 +39,8 @@ vector<double> rand_std_norm(int n)
 
 	return out;
 }
+}
+
 /*
 int main() {
 

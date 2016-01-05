@@ -4,7 +4,7 @@ from numpy import zeros, argmax
 class Smith_Waterman:
     """
 
-    Smith Waterman for string alignment
+    Smith-Waterman for string alignment
 
     Attributes
     ----------
@@ -171,7 +171,7 @@ class Smith_Waterman:
         return None
 
     def show(self, by = 100, show_match = True, match_char = "|"):
-        """Print Alignment result
+        """Print alignment result
         
         Parameters
         ----------
