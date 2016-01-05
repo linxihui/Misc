@@ -93,7 +93,7 @@ sudo apt-get -y install r-base r-base-dev
 sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev
 sudo R CMD javareconf
 rlib=`Rscript -e "cat(Sys.getenv('R_LIBS_USER'))"`
-mkdir -p `echo $rlib | seed "s#^~#$HOME#"`
+mkdir -p `echo $rlib | sed "s#^~#$HOME#"`
 
 sudo apt-get install jags
 
@@ -115,7 +115,7 @@ sudo apt-get -y install ipython ipython-notebook ipython-notebook-common ipython
 
 wget -q https://bootstrap.pypa.io/get-pip.py -P $tmp
 sudo python $tmp/get-pip.py
-(sudo pip install numpy scipy pandas patsy Theano ;)
+(sudo pip install numpy scipy pandas patsy Theano;)
 
 
 # Other program languages and library
@@ -134,7 +134,7 @@ sudo apt-get -y install liblbfgs-dev
 # install chinese support
 # ========================
 
-sudo apt-get -y intsall firefox-locale-zh-hant language-pack-gnome-zh-hant language-pack-zh-hant libreoffice-help-zh-tw libreoffice-l10n-zh-tw
+sudo apt-get -y install firefox-locale-zh-hant language-pack-gnome-zh-hant language-pack-zh-hant libreoffice-help-zh-tw libreoffice-l10n-zh-tw
 sudo apt-get -y install fonts-wqy-microhei fonts-wqy-zenhei xfonts-wqy
 sudo apt-get -y install ibus ibus-googlepinyin ibus-table-wubi
 
