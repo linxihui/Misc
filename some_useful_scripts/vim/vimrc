@@ -1,11 +1,5 @@
-" VIM configure script
-" For Linux/Mac user: save this file as '~/.vimrc'
-" For Windows user: save this file as '~\_vimrc', where '~' is your home director
-" Author: Eric
-" Date: Oct 08, 2015
-
 set nocompatible
-set dir=$HOME/.vim/.swapfiles//
+"set dir=$HOME/.vim/.swapfiles//
 syntax enable
 filetype on
 filetype plugin on
@@ -18,7 +12,7 @@ set backspace=indent,eol,start
 set ruler
 set number
 "set relativenumber
-set scrolloff=5 "minimum number of screen lines above and below the cursor
+set scrolloff=3 "minimum number of screen lines above and below the cursor
 "set wrap  
 set cindent
 set autoindent
@@ -265,3 +259,10 @@ autocmd! filetype SAS map <localleader>r <Esc>:w<CR>:!sas %<CR><CR>:botright sp 
 au filetype c,cpp nnoremap <LocalLeader>l <Esc>:w <bar> make % <bar> !./a.out <CR>
 au filetype c,cpp nnoremap <LocalLeader>c <Esc>:w <bar> make %<CR>
 au filetype c,cpp nnoremap <LocalLeader>e <Esc>:!./a.out<CR>
+
+
+function! Copy_to_Tmux(text)
+  call system("tmux set-buffer '" . substitute(a:text, "'", "'\\\\''", 'g') . "'" )
+endfunction
+
+vmap <LocalLeader>y "ry:call Copy_to_Tmux(@r)<CR>
